@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Red Cross Donation Payment Selection</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .step-indicator .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 1rem;
+        }
+
+        .step-indicator .step .step-number {
+            width: 2rem;
+            height: 2rem;
+            background-color: #d52b1e;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        .step-indicator .step .step-label {
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            color: #4b5563;
+        }
+
+        .step-indicator .step.active .step-number {
+            background-color: #b91c1c;
+        }
+
+        .step-indicator .step.active .step-label {
+            color: #b91c1c;
+            font-weight: bold;
+        }
+
+        .step-indicator .separator {
+            height: 2px;
+            background-color: #e5e7eb;
+            flex: 1;
+        }
+
+        .edit-link {
+            color: #d52b1e;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .payment-option {
+            border: 2px solid transparent;
+            padding: 1rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .payment-option:hover,
+        .payment-option:focus,
+        .payment-option.active {
+            border-color: #d52b1e;
+        }
+
+        .continue-btn {
+            background-color: #d52b1e;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 0.375rem;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .continue-btn:hover {
+            background-color: #b91c1c;
+        }
+
+        /* Additional styles for M-PESA logo */
+        #mpesa-option img {
+            width: 200px; /* Adjust the size as needed */
+            display: block;
+            margin: 0 auto; /* Center the image */
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-4xl mx-auto bg-white p-6 shadow rounded">
+        <div class="grid grid-cols-3 gap-4 mb-8">
+            <div class="col-span-1">
+                <div class="text-sm uppercase tracking-wider text-gray-500 mb-2">I want to donate</div>
+                <div class="text-3xl font-bold text-red-600">$76.88</div>
+                <div class="text-lg">Disaster Relief</div>
+                <div class="edit-link mt-2">
+                    <i class="fas fa-pencil-alt"></i>
+                    <span>Edit My Donation</span>
+                </div>
+            </div>
+            <div class="col-span-2">
+                <div class="step-indicator">
+                    <div class="step active">
+                        <div class="step-number">1</div>
+                        <div class="step-label">My Donation</div>
+                    </div>
+                    <div class="separator"></div>
+                    <div class="step active">
+                        <div class="step-number">2</div>
+                        <div class="step-label">Payment Type</div>
+                    </div>
+                    <div class="separator"></div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-label">Payment Details</div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div id="credit-card-option" class="payment-option active" tabindex="0"
+                         onclick="selectPaymentOption('credit-card')">
+                        <i class="fas fa-credit-card fa-2x text-red-600"></i>
+                        <div class="mt-2 text-lg text-gray-700">Credit Card</div>
+                    </div>
+                    <div id="mpesa-option" class="payment-option" tabindex="0" onclick="selectPaymentOption('mpesa')">
+                        <img src="MPESA.png" alt="M-PESA Logo">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flex justify-center mt-8">
+            <button class="continue-btn">Continue</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function selectPaymentOption(option) {
+        document.getElementById('credit-card-option').classList.remove('active');
+        document.getElementById('mpesa-option').classList.remove('active');
+        document.getElementById(option + '-option').classList.add('active');
+    }
+</script>
+</body>
+</html>

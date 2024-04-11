@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Red Cross Donation Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .btn-red {
+            background-color: #d52b1e;
+            color: white;
+        }
+
+        .input-red-focus {
+            border-color: #d52b1e;
+            --tw-ring-color: #d52b1e;
+        }
+
+        .checkbox-red:checked {
+            background-color: #d52b1e;
+            border-color: #d52b1e;
+        }
+
+        .fee-message {
+            background-color: #fef6f6;
+            border-left: 4px solid #d52b1e;
+            padding: 0.75rem;
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            color: #d52b1e;
+        }
+
+        .support-popup {
+            display: none;
+            position: absolute;
+            z-index: 10;
+            width: 100%;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
+            border-radius: 0.375rem;
+            margin-top: 0.5rem;
+        }
+
+        .support-popup.hidden {
+            display: none;
+        }
+
+        .dedication-field {
+            display: none;
+            border: 1px solid #ddd;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 0.375rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-3xl mx-auto bg-white p-6 shadow rounded">
+            <h1 class="text-4xl text-center font-bold mb-8" style="color: #d52b1e;">My Donation</h1>
+            <div class="mb-8">
+                <h2 class="text-2xl font-semibold mb-4">Frequency</h2>
+                <div class="flex gap-4">
+                    <button id="one-time-btn" class="btn-red px-6 py-3 rounded w-full" onclick="setFrequency('one-time')">One Time</button>
+                    <button id="monthly-btn" class="bg-gray-200 text-gray-700 px-6 py-3 rounded w-full" onclick="setFrequency('monthly')">Monthly</button>
+                </div>
+            </div>
+            <div class="mb-8">
+                <h2 class="text-2xl font-semibold mb-4">I Want to Give</h2>
+                <div class="flex flex-wrap gap-4">
+                    <button class="btn-red px-6 py-3 rounded" onclick="setAmount(75)">$75</button>
+                    <button class="btn-red px-6 py-3 rounded" onclick="setAmount(125)">$125</button>
+                    <button class="btn-red px-6 py-3 rounded" onclick="setAmount(250)">$250</button>
+                    <button class="btn-red px-6 py-3 rounded" onclick="setAmount(500)">$500</button>
+                    <button class="btn-red px-6 py-3 rounded" onclick="setAmount(1000)">$1000</button>
+                    <div class="flex items-center border border-gray-300 rounded px-4 py-2">
+                        <span class="text-gray-500">$</span>
+                        <input id="other-amount" type="text" placeholder="Other Amount" class="outline-none px-3 py-2 w-full input-red-focus" onchange="setAmount(this.value)">
+                    </div>
+                </div>
+                <p class="text-sm text-gray-600 mt-4">$10 is the minimum online donation. All donations are tax deductible.</p>
+            </div>
+            <div class="mb-8">
+                <label class="inline-flex items-center">
+                    <input id="add-fees" type="checkbox" class="form-checkbox rounded checkbox-red" onchange="toggleFees(this)">
+                    <span class="ml-2">Please add a small amount to cover processing fees.</span>
+                </label>
+                <div id="fee-message" class="fee-message hidden">
+                    An additional <span id="fee-amount">$0.00</span> will be added to cover processing fees.
+                </div>
+            </div>
+            <div class="mb-8 relative">
+                <h2 class="text-2xl font-semibold mb-4">I Want to Support</h2>
+                <button id="support-btn" class="block w-full bg-gray-200 text-gray-700 py-3 px-4 rounded leading-tight focus:outline-none" onclick="toggleSupportPopup()">
+                    <span id="support-btn-text">Select an Option</span>
+                    <i class="fas fa-chevron-down float-right mt-1"></i>
+                </button>
+                <div id="support-popup" class="support-popup hidden">
+                    <div class="p-4">
+                        <div class="flex items-center mb-4 cursor-pointer hover:bg-red-100 rounded p-2" onclick="selectSupportOption('Disaster Relief', 'Help people affected by disasters big and small.')">
+                            <i class="fas fa-house-damage text-red-500 mr-2"></i>
+                            <span class="text-gray-700">Disaster Relief - Help people affected by disasters big and small.</span>
+                        </div>
+                        <div class="flex items-center mb-4 cursor-pointer hover:bg-red-100 rounded p-2" onclick="selectSupportOption('Where It Is Needed Most', 'Support all of the urgent humanitarian needs of the American Red Cross.')">
+                            <i class="fas fa-users text-red-500 mr-2"></i>
+                            <span class="text-gray-700">Where It Is Needed Most - Support all of the urgent humanitarian needs.</span>
+                        </div>
+                        <div class="flex items-center mb-4 cursor-pointer hover:bg-red-100 rounded p-2" onclick="selectSupportOption('Your Local Red Cross', 'Provide for local Red Cross programs and services in your community.')">
+                            <i class="fas fa-map-marker-alt text-red-500 mr-2"></i>
+                            <span class="text-gray-700">Your Local Red Cross - Provide for local programs and services.</span>
+                        </div>
+                        <div class="flex items-center cursor-pointer hover:bg-red-100 rounded p-2" onclick="selectSupportOption('Blood Services', 'Help ensure that the life-saving gift of blood and blood products will be available.')">
+                            <i class="fas fa-droplet text-red-500 mr-2"></i>
+                            <span class="text-gray-700">Blood Services - Help ensure the life-saving gift of blood will be available.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-8">
+                <label class="inline-flex items-center">
+                    <input type="checkbox" class="form-checkbox rounded checkbox-red" onchange="toggleDedicationField(this)">
+                    <span class="ml-2">Dedicate this gift to a friend or loved one</span>
+                </label>
+                <div id="dedication-field" class="dedication-field">
+                    <input type="text" placeholder="Dedication Name" class="w-full px-3 py-2 border rounded focus:outline-none focus:ring input-red-focus">
+                </div>
+            </div>
+            <div class="flex justify-center mt-8">
+                <button class="btn-red px-10 py-3 rounded text-white font-bold">Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var frequency = 'one-time';
+        var amount = 0;
+    
+        function setFrequency(freq) {
+            frequency = freq;
+            document.getElementById('one-time-btn').className = freq === 'one-time' ? 'btn-red px-6 py-3 rounded w-full' : 'bg-gray-200 text-gray-700 px-6 py-3 rounded w-full';
+            document.getElementById('monthly-btn').className = freq === 'monthly' ? 'btn-red px-6 py-3 rounded w-full' : 'bg-gray-200 text-gray-700 px-6 py-3 rounded w-full';
+        }
+    
+        function setAmount(value) {
+            amount = parseFloat(value);
+            updateFeeMessage();
+        }
+    
+        function toggleFees(checkbox) {
+            document.getElementById('fee-message').classList.toggle('hidden', !checkbox.checked);
+            updateFeeMessage();
+        }
+    
+        function updateFeeMessage() {
+            var feeAmount;
+            if (amount === 75) {
+                feeAmount = 1.88;
+            } else if (amount === 125) {
+                feeAmount = 3.13;
+            } else if (amount === 250) {
+                feeAmount = 6.25;
+            } else {
+                feeAmount = amount * 0.03;
+            }
+            document.getElementById('fee-amount').textContent = '$' + feeAmount.toFixed(2);
+        }
+    
+        function toggleSupportPopup() {
+            var popup = document.getElementById('support-popup');
+            popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+        }
+    
+        function selectSupportOption(option, detail) {
+            document.getElementById('support-btn-text').textContent = option;
+            toggleSupportPopup();
+        }
+    
+        function toggleDedicationField(checkbox) {
+            document.getElementById('dedication-field').style.display = checkbox.checked ? 'block' : 'none';
+        }
+    </script>
+    </body>
+    </html>
